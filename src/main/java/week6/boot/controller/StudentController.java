@@ -53,6 +53,7 @@ public class StudentController {
     public ModelAndView createNewUser(@Valid Student user, BindingResult bindingResult ) {
 
         ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("student/studentAdd");
         Student userExists = studentRepository.findByEmail(user.getEmail());
 //
 //        if (userExists != null) {
@@ -135,6 +136,7 @@ public class StudentController {
         if(result.hasErrors()){
             return "student/studentEdit";
         }
+
 
 
         userService.updateUser(updatedStudent);

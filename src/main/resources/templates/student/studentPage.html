@@ -37,7 +37,7 @@
                 <div class="col-sm-6">
 
 
-                        <a th:href="@{/add}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Student</span></a>
+                        <a th:href="@{/student/add}" class="btn btn-success" data-toggle="modal"><i class="material-icons">&#xE147;</i> <span>Add New Student</span></a>
 
 
                 </div>
@@ -74,8 +74,8 @@
                     <td th:text="${student.lastName}"></td>
                     <td th:text="${student.email}"></td>
                     <td>
-                        <a th:href="@{/edit(id=${student.id})}" class="edit" data-toggle="modal" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
-                        <a th:href="@{/delete(id=${student.id})}" class="delete" data-toggle="modal" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                        <a th:href="@{/student/edit(id=${student.id})}" class="edit" data-toggle="modal" ><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                        <a th:href="@{/student/delete(id=${student.id})}" class="delete" data-toggle="modal" ><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
 
 
             </tbody>

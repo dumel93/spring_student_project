@@ -35,7 +35,7 @@
 <div class="container" style="width: 30%">
 
 
-    <form th:action="@{/edit/{id}(id=${student.id})}" method="post" th:object="${student}"  >
+    <form th:action="@{/student/edit/{id}(id=${student.id})}" method="post" th:object="${student}"  >
         <div class="modal-header" style="margin-top: 70px">
             <h2 class="modal-title" >Edit Student</h2>
         </div>
