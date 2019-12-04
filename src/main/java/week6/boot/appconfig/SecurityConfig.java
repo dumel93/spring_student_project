@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import week6.boot.service.SpringDataUserDetailsService;
+
 
 import javax.sql.DataSource;
 
@@ -36,9 +36,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
 
-
-
     }
+
+
+
 
 
 
@@ -52,14 +53,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.
                 authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/").hasAnyRole("STUDENT","ADMIN")
+//                .antMatchers("/student/add").hasAnyRole("ADMIN")
                 .antMatchers("/login").permitAll()
-                .antMatchers("/registration").permitAll()
-                .antMatchers("/admin/**").hasAnyRole("USER","ADMIN").and()
-//                .authenticated().and().csrf().disable()
-                .formLogin()
+//                .antMatchers("/registration").permitAll()
+                .antMatchers("/admin/**").hasAnyRole("STUDENT","ADMIN")
+                .anyRequest().permitAll()
+                .and()
+//                .csrf().disable()
+                .formLogin().permitAll()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/index")
+                .defaultSuccessUrl("/")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
@@ -81,10 +85,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public SpringDataUserDetailsService customUserDetailsService() {
-        return new SpringDataUserDetailsService();
-    }
+
 
 
 

@@ -34,6 +34,12 @@
 <p>Posiada role: <span sec:authentication="authorities"></span></p>
 </p>
 
+<p sec:authorize="hasRole('ROLE_ADMIN')">
+  MAM ROLE ADMIN
+
+  <a th:href="@{/student/add}">ADD STUDENT </a>
+</p>
+
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
     <a class="navbar-brand mr-1" href="index.html">StudentJAVA</a>
@@ -146,62 +152,67 @@
         </ol>
 
 
-        <!--<div sec:authorize="isAuthenticated()">-->
-          <!--This content is only shown to authenticated users.-->
-        <!--</div>-->
-        <!--<div sec:authorize="hasRole('ROLE_ADMIN')">-->
-          <!--This content is only shown to administrators.-->
-        <!--</div>-->
-        <!--<div sec:authorize="hasRole('ROLE_STUDENT')">-->
-          <!--This content is only shown to student.-->
-        <!--</div>-->
 
 
-        <!-- DataTables Example -->
-        <!--<div class="card mb-3" >-->
-          <!--<div class="card-header" th:object="${students}" style="margin: auto">-->
-            <!--<i class="fas fa-table" ></i>-->
-           <!--List of Students-->
-            <!--<br><span class="size"> Number of students:</span>-->
-            <!--<span class="size" th:text="${students.size()}" style="margin: auto; font-size:15px" >-->
-
-            <!--</span>-->
-          <!--</div>-->
-          <!--<div class="card-body">-->
-            <!--<div class="table-responsive">-->
-              <!--<table   class="table table-bordered" id="dataTable" width="100%" cellspacing="0">-->
-                <!--<thead>-->
-                  <!--<tr>-->
-                    <!--<th style="width: 20px">Number</th>-->
-                    <!--<th>First Name </th>-->
-                    <!--<th>Last name </th>-->
-                    <!--<th>Email </th>-->
-
-                  <!--</tr>-->
-                <!--</thead>-->
-                <!--<tfoot>-->
-                  <!--<tr >-->
-                    <!--<th style="width: 20px">Number</th>-->
-                    <!--<th>First Name </th>-->
-                    <!--<th>Last name </th>-->
-                    <!--<th>Email </th>-->
-                  <!--</tr>-->
-                <!--</tfoot>-->
-                <!--<tbody>-->
-                <!--<tr th:each="student,iterStat: ${students}" >-->
-                    <!--<td th:text="${iterStat.index+1}"></td>-->
-                    <!--<td th:text="${student.firstName}"></td>-->
-                    <!--<td th:text="${student.lastName}"></td>-->
-                    <!--<td th:text="${student.email}"></td>-->
+        <!-- content -->
 
 
-                <!--</tr>-->
-                <!--</tbody>-->
-              <!--</table>-->
-            <!--</div>-->
-          <!--</div>-->
-          <!--<div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>-->
-        <!--</div>-->
+
+
+
+
+         DataTables Example
+        <div class="card mb-3" >
+          <div class="card-header" th:object="${students}" style="margin: auto">
+            <i class="fas fa-table" ></i>
+           List of Students
+            <br><span class="size"> Number of students:</span>
+            <span class="size" th:text="${students.size()}" style="margin: auto; font-size:15px" >
+
+            </span>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table   class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th style="width: 20px">Number</th>
+                    <th>First Name </th>
+                    <th>Last name </th>
+                    <th>Email </th>
+                    <th>Edit</th>
+
+                    <th>Delete</th>
+
+
+                  </tr>
+                </thead>
+                <tfoot>
+                  <tr >
+                    <th style="width: 20px">Number</th>
+                    <th>First Name </th>
+                    <th>Last name </th>
+                    <th>Email </th>
+                    <th>Edit</th>
+
+                    <th>Delete</th>
+                  </tr>
+                </tfoot>
+                <tbody>
+                <tr th:each="student,iterStat: ${students}" >
+                    <td th:text="${iterStat.index+1}"></td>
+                    <td th:text="${student.firstName}"></td>
+                    <td th:text="${student.lastName}"></td>
+                    <td th:text="${student.email}"></td>
+
+
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+        </div>
 
       </div>
       <!-- /.container-fluid -->

@@ -1,13 +1,14 @@
 package week6.boot.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Component;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 import week6.boot.entity.Student;
 
 import java.util.List;
 
 
-@Component
+@Repository
 public interface StudentRepository extends JpaRepository<Student,Long> {
 
     Student findByFirstName(String firstName);
@@ -17,7 +18,20 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
                                                           String firstName);
 
 
-    Student findById(Long id);
+
+    Student findByEmail(String email);
+//
+//    @Query(value = "DELETE FROM students WHERE id = ?1",
+//            nativeQuery = true)
+//    void deleteById(Long id);
+
+
+
+
+    @Query(value = "select * from students where id !=1",nativeQuery = true)
+    List<Student> findAllStudents();
+
+
 
 
 

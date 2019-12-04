@@ -1,8 +1,10 @@
 package week6.boot.service;
 
-import week6.boot.entity.User;
+import week6.boot.entity.Student;
 
 public interface UserService {
-    public User findByEmail(String name);
-    public void saveUser(User user);
+    public Student findByEmail(String name);
+    public void saveUser(Student student);
+
+    public void updateUser(Student student);
 }
