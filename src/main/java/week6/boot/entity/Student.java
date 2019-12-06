@@ -9,6 +9,7 @@ import week6.boot.validation.CustomEmailVal;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import javax.validation.groups.Default;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "students")
 public class Student {
+
     @Id
     @GeneratedValue(strategy =
             GenerationType.IDENTITY)
@@ -40,7 +42,8 @@ public class Student {
     private boolean isPresent=false;
 
     @NotNull
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.ALL})
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany
     @JoinTable(name = "student_lecture", joinColumns = @JoinColumn(name = "student_id"),
             inverseJoinColumns = @JoinColumn(name = "lecture_id"))
     private List<Lecture> lectures = new ArrayList<>();

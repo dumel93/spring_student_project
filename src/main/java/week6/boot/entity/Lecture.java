@@ -46,7 +46,7 @@ public class Lecture {
     private Date date;
 
     @ManyToMany(mappedBy = "lectures")
-    private List<Student> student = new ArrayList<>();
+    private List<Student> students = new ArrayList<>();
 
 
 }

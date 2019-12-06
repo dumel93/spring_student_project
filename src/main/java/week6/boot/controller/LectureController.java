@@ -1,6 +1,10 @@
 package week6.boot.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,11 +13,17 @@ import org.springframework.web.servlet.ModelAndView;
 import week6.boot.entity.Lecture;
 import week6.boot.entity.Student;
 import week6.boot.repositories.LectureRepository;
+import week6.boot.repositories.StudentRepository;
+import week6.boot.service.CurrentUser;
 
 import javax.validation.Valid;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @Controller
 @RequestMapping("/lecture")
 public class LectureController {
@@ -21,14 +31,53 @@ public class LectureController {
     @Autowired
     private LectureRepository lectureRepository;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
     @GetMapping("/get")
     public String home(Model model) {
 
         List<Lecture> lectures= lectureRepository.findAllByOrderByDateAsc();
         model.addAttribute("lectures",lectures);
-
         return "lecture/lectureList";
+
     }
+
+
+    @Secured("ROLE_STUDENT")
+    @GetMapping("/regAtt")
+    public String registerAttGet(Model model,@AuthenticationPrincipal UserDetails user){
+
+
+        List<Lecture> lectures= lectureRepository.findAllByOrderByDateAsc();
+        model.addAttribute("lectures",lectures);
+
+
+        String emailCuurentUser=user.getUsername();
+        Student student = studentRepository.findByEmail(emailCuurentUser);
+
+        model.addAttribute("student",student);
+
+        return "lecture/RegisterAttendanceByStudent";
+    }
+
+    @Secured("ROLE_STUDENT")
+    @PostMapping("/regAtt")
+    public String registerAttPost(Model model,@Valid Student student){
+
+
+
+
+//        List<Lecture> lectures= lectureRepository.findAllByOrderByDateAsc();
+//        for(Lecture lecture: lectures){
+//
+//            if(student.getEmail().equals(lecture.getStudents()))
+//        }
+
+        return "lecture/RegisterAttendanceByStudent";
+    }
+
+
 
     @RequestMapping(value="/add", method = RequestMethod.GET)
     public ModelAndView registration(){

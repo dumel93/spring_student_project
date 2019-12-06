@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import week6.boot.service.SpringDataUserDetailsService;
 
 
 import javax.sql.DataSource;
@@ -35,12 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authoritiesByUsernameQuery(rolesQuery)
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
-
     }
-
-
-
-
 
 
     @Value("${spring.queries.users-query}")
@@ -54,21 +50,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.
                 authorizeRequests()
                 .antMatchers("/").hasAnyRole("STUDENT","ADMIN")
-//                .antMatchers("/student/add").hasAnyRole("ADMIN")
+
                 .antMatchers("/login").permitAll()
-//                .antMatchers("/registration").permitAll()
+
                 .antMatchers("/admin/**").hasAnyRole("STUDENT","ADMIN")
+                .antMatchers("/lecture/regAtt").hasRole("STUDENT")
                 .anyRequest().permitAll()
                 .and()
 //                .csrf().disable()
                 .formLogin().permitAll()
-                .loginPage("/login").failureUrl("/login?error=true")
+                .loginPage("/login")
                 .defaultSuccessUrl("/")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/").and().exceptionHandling()
+                .logoutSuccessUrl("/lecture/regAtt").and().exceptionHandling()
                 .accessDeniedPage("/403");
     }
 
@@ -85,7 +82,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-
+    @Bean
+    public SpringDataUserDetailsService customUserDetailsService() {
+        return new SpringDataUserDetailsService();
+    }
 
 
 
