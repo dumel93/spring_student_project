@@ -20,11 +20,6 @@ public interface StudentRepository extends JpaRepository<Student,Long> {
 
 
     Student findByEmail(String email);
-//
-//    @Query(value = "DELETE FROM students WHERE id = ?1",
-//            nativeQuery = true)
-//    void deleteById(Long id);
-
 
 
 

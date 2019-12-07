@@ -42,10 +42,10 @@ public class Lecture {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Temporal(TemporalType.DATE)
-//    @NotEmpty
     private Date date;
-
-    @ManyToMany(mappedBy = "lectures")
+//
+    @OneToMany(cascade = CascadeType.REMOVE,orphanRemoval = true)
+//    @JoinColumn(name="id_student")
     private List<Student> students = new ArrayList<>();
 
 

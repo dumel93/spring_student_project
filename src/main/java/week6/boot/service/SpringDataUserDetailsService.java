@@ -37,7 +37,7 @@ public class SpringDataUserDetailsService implements UserDetailsService {
         student.setId(user.getId());
         student.setFirstName(user.getFirstName());
         student.setLastName(user.getLastName());
-        student.setPresent(user.isPresent());
+//        student.setPresent(user.isPresent());
         student.setActive(true);
         student.setLectures(user.getLectures());
 

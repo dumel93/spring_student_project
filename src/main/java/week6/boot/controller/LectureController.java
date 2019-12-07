@@ -12,16 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import week6.boot.entity.Lecture;
 import week6.boot.entity.Student;
+import week6.boot.entity.StudentLecture;
 import week6.boot.repositories.LectureRepository;
+import week6.boot.repositories.StudentLectureRepository;
 import week6.boot.repositories.StudentRepository;
-import week6.boot.service.CurrentUser;
-
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -34,6 +31,10 @@ public class LectureController {
     @Autowired
     private StudentRepository studentRepository;
 
+    @Autowired
+    private  StudentLectureRepository studentLectureRepository;
+
+    @Secured("ROLE_ADMIN")
     @GetMapping("/get")
     public String home(Model model) {
 
@@ -42,6 +43,16 @@ public class LectureController {
         return "lecture/lectureList";
 
     }
+
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        model.addAttribute("lectures", lectureRepository.findAllByOrderByDateAsc());
+    }
+
+
+
+
 
 
     @Secured("ROLE_STUDENT")
@@ -58,27 +69,62 @@ public class LectureController {
 
         model.addAttribute("student",student);
 
+        List<Boolean> booleanList= studentLectureRepository.findAllByStudentIdOnList(student.getId());
+        model.addAttribute("booleanList",booleanList);
+
+        int attendance =this.countPosnumber(booleanList);
+
+
+        model.addAttribute("attendance",String.valueOf(attendance));
+
+
         return "lecture/RegisterAttendanceByStudent";
     }
+
+
 
     @Secured("ROLE_STUDENT")
-    @PostMapping("/regAtt")
-    public String registerAttPost(Model model,@Valid Student student){
+    @PostMapping("/regAtt/{id}")
+    public String registerAttPost(@PathVariable long id, HttpServletRequest request, Model model, @ModelAttribute Student student, @AuthenticationPrincipal UserDetails user) {
+
+
+        String value= request.getParameter("present");
+        Boolean bool=Boolean.valueOf(value);
+
+        String email =user.getUsername();
+        Student student2=studentRepository.findByEmail(email);
+
+
+        List<Lecture> lectures= lectureRepository.findAllByOrderByDateAsc();
+        model.addAttribute("lectures",lectures);
+
+        Long student_id=student2.getId();
+
+        StudentLecture sl=  studentLectureRepository.findByStudentIdAndLectureId(student_id,id);
+        sl.setPresent(bool);
+        sl.setId(sl.getId());
+        sl.setStudent(sl.getStudent());
+        sl.setLecture(sl.getLecture());
+        studentLectureRepository.save(sl);
+
+
+        model.addAttribute("student",student2);
+
+        List<Boolean> newList= studentLectureRepository.findAllByStudentIdOnList(student_id);
+        model.addAttribute("booleanList",newList);
 
 
 
+        model.addAttribute("attendance",String.valueOf(this.countPosnumber(newList)));
 
-//        List<Lecture> lectures= lectureRepository.findAllByOrderByDateAsc();
-//        for(Lecture lecture: lectures){
-//
-//            if(student.getEmail().equals(lecture.getStudents()))
-//        }
+        if(bool)model.addAttribute("success","you have just registered your attendance: lecture "+ lectureRepository.findOne(id).getSubject());
+
 
         return "lecture/RegisterAttendanceByStudent";
     }
 
 
-
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value="/add", method = RequestMethod.GET)
     public ModelAndView registration(){
         ModelAndView modelAndView = new ModelAndView();
@@ -88,6 +134,7 @@ public class LectureController {
         return modelAndView;
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processForm(@Valid Lecture lecture, BindingResult bindingResult,Model model) {
 
@@ -111,7 +158,7 @@ public class LectureController {
         return "lecture/lectureAdd";
     }
 
-
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     public String editGET(@RequestParam Long id, Model model) {
         Lecture lecture=lectureRepository.findOne(id);
@@ -120,7 +167,7 @@ public class LectureController {
         return "lecture/lectureEdit";
     }
 
-
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
     public String editPOST(@PathVariable long id, @Valid Lecture lecture, Model model) {
 
@@ -139,8 +186,9 @@ public class LectureController {
         return "lecture/lectureList";
     }
 
+    @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String delete(Model model, @RequestParam Long id) {
+    public String delete(Model model, @RequestParam Long id, @AuthenticationPrincipal UserDetails user) {
 
 
         Lecture lecture =lectureRepository.findOne(id);
@@ -149,13 +197,27 @@ public class LectureController {
             String name=lecture.getSubject();
             lectureRepository.delete(id);
 
+            String email= user.getUsername();
+            Student student= studentRepository.findByEmail(email);
 
             model.addAttribute("successMessage","It was removed lecture:: "+ name);
             model.addAttribute("lectures",lectureRepository.findAllByOrderByDateAsc());
 
+
+            List<StudentLecture> studentLectureList= studentLectureRepository.findAllByLectureId(id);
+            for( StudentLecture sl2:studentLectureList ){
+                studentLectureRepository.delete(sl2);
+            }
+
+
+
+
+
+
+
             return "lecture/lectureList";
         } else {
-           model.addAttribute("error","admin, you cannot delete a lecture that has not yet started!");
+            model.addAttribute("error","admin, you cannot delete a lecture that were already started!");
             List<Lecture> lectures= lectureRepository.findAllByOrderByDateAsc();
             model.addAttribute("lectures",lectures);
 
@@ -163,6 +225,18 @@ public class LectureController {
         }
 
 
+
+    }
+
+    public int countPosnumber(List<Boolean> list){
+
+        int attendance = 0;
+
+        for(Boolean val:list){
+            if(val) attendance +=1;
+        }
+
+        return attendance;
 
     }
 

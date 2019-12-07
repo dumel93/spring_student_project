@@ -2,6 +2,7 @@ package week6.boot.entity;
 
 import com.sun.istack.internal.Nullable;
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -39,13 +40,8 @@ public class Student {
     private String lastName;
 
 
-    private boolean isPresent=false;
 
-    @NotNull
-//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @ManyToMany
-    @JoinTable(name = "student_lecture", joinColumns = @JoinColumn(name = "student_id"),
-            inverseJoinColumns = @JoinColumn(name = "lecture_id"))
+    @OneToMany(cascade = CascadeType.REMOVE,orphanRemoval = true)
     private List<Lecture> lectures = new ArrayList<>();
 
     @Email(message = "*Please provide a valid Email")

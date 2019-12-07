@@ -38,9 +38,10 @@
                         <h2 th:text=" | Your List of attendace : ${student.firstName}   ${student.lastName} |"> </h2>
 
 
-                        <h3>List of <b>Lectures</b></h3>
-                        <h6>Number of Lectures <b th:text="${lectures.size()}"></b></h6>
 
+                        <h4>Your attendance:  <b th:text="|  ${attendance}/ ${lectures.size()}|"></b></h4>
+
+                        <h6 th:utext="${success}"></h6>
 
                         </p>
                     </div>
@@ -64,25 +65,50 @@
                         <td th:text="${lecture.subject}"></td>
                         <td th:text="${lecture.location}"></td>
                         <td th:text=" ${#dates.format(lecture.date, 'dd/MMM/yyyy' )}"></td>
-                        <td style="padding: 0 0 ">
 
-                            <form id="add" role="form" th:action="@{/lecture/regAtt}" method="post" th:object="${student}">
 
-                                <input type="hidden" th:field="*{present}"/>
+                        <td>
 
-                                <div class="form-group">
 
-                                    <label class="radio-inline">
-                                        <input type="radio" name="present" id="optionsRadiosInline" value="1"
-                                               th:checked="*{present}"/>Yes
+                            <form class="change" role="form" th:action="@{/lecture/regAtt/{id}(id=${lecture.id})}" method="post" th:object="${student}">
+
+
+                                <input type="hidden" />
+
+                                <div class="form-group" th:if="${lecture.date.before(#dates.createNow())}" >
+
+                                    <label class="radio-inline" >
+                                        <input  type="radio" name="present" class="optionsRadiosInline" value="true"
+                                               th:checked="${booleanList.get(__${iterStat.index}__)}"
+                                        />Yes
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="present" id="optionsRadiosInline2" value="0"
-                                               th:checked="*{present} == false"/>No
+                                        <input
+                                                type="radio" name="present" classs="optionsRadiosInline2" value="false"
+                                               th:checked="${booleanList.get(__${iterStat.index}__)}==false"
+
+                                        />No
                                     </label>
                                 </div>
 
-                                <input style="margin-right: 100px" type="submit" class="btn btn-success" value="Save ">
+                                <div class="form-group" th:unless="${lecture.date.before(#dates.createNow())}" >
+
+                                    <label class="radio-inline" >
+                                        <input  type="radio" name="present" class="optionsRadiosInline" value="1"
+                                                th:checked="${booleanList.get(__${iterStat.index}__)}" disabled
+
+                                        />Yes
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input
+                                                type="radio" name="present" classs="optionsRadiosInline2" value="0"
+                                                th:checked="${booleanList.get(__${iterStat.index}__)}==false"
+                                                disabled
+                                        />No
+                                    </label>
+                                </div>
+
+                                <input th:if="${lecture.date.before(#dates.createNow())}" style="margin-right: 100px" type="submit" class="btn btn-success" value="Save ">
                             </form>
 
 

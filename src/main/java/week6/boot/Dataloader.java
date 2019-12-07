@@ -21,12 +21,12 @@ public class Dataloader {
                 email = StringUtils.stripAccents(email); // lack of polish special characters
 
                 String output ;
-                output=String.format("insert into student.students values (%d,false,'%s','%s',false,'%s','$$2a$10$v2jHZ/IdBq2/twWzqzQe/emY.urleja7TEdiZENy20TNCkdSftDB6')",i+1,email,firstName,lastName);
+                output=String.format("insert into student.students values (%d,false,'%s','%s','%s','$$2a$10$v2jHZ/IdBq2/twWzqzQe/emY.urleja7TEdiZENy20TNCkdSftDB6')",i+1,email,firstName,lastName);
                 System.out.println(output);
 
                 String output2= String.format("insert into student_role values (%d,2)",i+1);
 
-                System.out.println(output2);
+//                System.out.println(output2);
 
 
                 String output3=String.format("insert into lectures values (%d,2)",i+1);

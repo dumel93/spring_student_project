@@ -42,7 +42,20 @@ public class UserServiceImpl implements  UserService {
 
     }
 
+
     @Override
+    public void saveAdmin(Student student) {
+
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
+        student.setActive(true);
+        Role userRole = roleRepository.findByName("ROLE_ADMIN");
+        student.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+        studentRepository.save(student);
+
+    }
+
+
+        @Override
     public void updateUser(Student student) {
 
         student.setId(student.getId());

@@ -2,6 +2,7 @@ package week6.boot.appconfig;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -14,5 +15,19 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/403").setViewName("403");
         registry.addViewController("/login").setViewName("login");
 //        registry.addViewController("/student/add").setViewName("studentAdd");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler(
+                "/webjars/**",
+                "/images/**",
+                "/css/**",
+                "/js/**")
+                .addResourceLocations(
+                        "classpath:/META-INF/resources/webjars/",
+                        "classpath:/static/images/",
+                        "classpath:/static/css/",
+                        "classpath:/static/js/");
     }
 }

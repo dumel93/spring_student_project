@@ -7,4 +7,6 @@ public interface UserService {
     public void saveUser(Student student);
 
     public void updateUser(Student student);
+
+    public void saveAdmin(Student student);
 }

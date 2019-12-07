@@ -26,7 +26,12 @@
 <body>
 
 <div th:include="navbar :: navbar"></div>
+<!--<p th:text="${list}"></p>-->
+<!--<p th:text="${lectureCounter}"></p>-->
+<!--<p th:text="${studentCounter}"></p>-->
 
+<!--<img th:src="@{/images/fail.png}"/>-->
+<!--<img th:src="@{/images/good.png}"/>-->
 
 <div class="container">
     <div class="table-wrapper">
@@ -34,20 +39,12 @@
             <div class="row">
                 <div class="col-sm-6">
                     <h3>List of <b>attendance</b></h3>
-
-
                 </div>
                 <div class="col-sm-6">
-
-
-
-
                 </div>
             </div>
         </div>
         <div>
-
-
 
             <table class="table table-striped table-hover" >
                 <thead>
@@ -60,17 +57,31 @@
                 </thead>
 
                 <tbody >
-                <tr th:each="student,iterStat: ${students}" >
+                <tr th:each="student,iterStat: ${students}"  >
 
 
-                   <td th:text="| ${iterStat.index+1}. ${student.firstName} ${student.lastName}   (${howManyLectureStudentWas}/${lectures.size()}) | "></td>
-                    <td th:each="lecture: ${lectures}" th:text="${student.present}"></td>
+                    <td>
+                        <p class="p" th:text="|${iterStat.index+1}. ${student.firstName}  ${student.lastName} |" ></p>
+                        <p th:text="|(${studentCounter.get(__${iterStat.index}__)}/${lectures.size()}) | "></p>
+                    </td>
+
+                    <td th:each="lecture: ${lectures}">
+
+                        <img th:if="${list.get(__${lectureStat.index}__).get(__${iterStat.index}__)} == true"
+                             th:src="@{/images/good.png}" style="width: 25px; height: 25px;">
+
+                        <img th:if="${list.get(__${lectureStat.index}__).get(__${iterStat.index}__)} == false"
+                             th:src="@{/images/fail.png}" style="width: 25px; height: 25px;">
+
+
+
+                    </td>
 
                 </tr>
 
                 <tr>
                     <td></td>
-                    <td    th:each="lecture:${lectures}"   th:text="|(${howManyStudentsWereonLecture}/${students.size()}) | "></td>
+                    <td    th:each="lecture:${lectures}"   th:text="|(${lectureCounter.get(__${lectureStat.index}__)}/${students.size()}) | "></td>
                 </tr>
 
                 </tbody>
