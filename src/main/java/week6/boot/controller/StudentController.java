@@ -89,7 +89,16 @@ public class StudentController {
 
         else {
 
+
             userService.saveUser(student);
+            for (Lecture lecture : lectureRepository.findAll()) {
+                StudentLecture sl = new StudentLecture();
+                sl.setPresent(false);
+                sl.setLecture(lecture);
+                sl.setStudent(student);
+                studentLectureRepository.save(sl);
+            }
+
             modelAndView.addObject("successMessage", "Student: "
                     +student.getFirstName() + " " + student.getLastName()+ " "
                     + student.getEmail() + " has been registered successfully");
@@ -112,16 +121,18 @@ public class StudentController {
 
         String name=student.getFirstName();
         String lastName=student.getLastName();
-        studentRepository.delete(id);
+
 
         String email = user.getUsername();
         Student student1= studentRepository.findByEmail(email);
 
-//        List<StudentLecture> studentLectureList= studentLectureRepository.findAllByStudentId(student1.getId());
-//        for( StudentLecture sl2:studentLectureList ){
-//            studentLectureRepository.deleteB
-//        }
-        studentLectureRepository.deleteStudentLecturesByStudentIdCustom(student1.getId());
+        List<StudentLecture> studentLectureList= studentLectureRepository.findAllByStudentId(student.getId());
+        for( StudentLecture studentLectureToDelete:studentLectureList ){
+            studentLectureRepository.delete(studentLectureToDelete);
+        }
+        studentRepository.delete(student);
+
+
 
         model.addAttribute("successMessage","It was removed student:: "+ name+" "+lastName);
         model.addAttribute("students",studentRepository.findAllStudents());

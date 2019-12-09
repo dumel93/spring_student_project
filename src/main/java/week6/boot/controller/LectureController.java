@@ -70,6 +70,7 @@ public class LectureController {
         model.addAttribute("student",student);
 
         List<Boolean> booleanList= studentLectureRepository.findAllByStudentIdOnList(student.getId());
+
         model.addAttribute("booleanList",booleanList);
 
         int attendance =this.countPosnumber(booleanList);
@@ -102,9 +103,9 @@ public class LectureController {
 
         StudentLecture sl=  studentLectureRepository.findByStudentIdAndLectureId(student_id,id);
         sl.setPresent(bool);
-        sl.setId(sl.getId());
-        sl.setStudent(sl.getStudent());
-        sl.setLecture(sl.getLecture());
+//        sl.setId(sl.getId());
+//        sl.setStudent(sl.getStudent());
+//        sl.setLecture(sl.getLecture());
         studentLectureRepository.save(sl);
 
 
@@ -138,25 +139,36 @@ public class LectureController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processForm(@Valid Lecture lecture, BindingResult bindingResult,Model model) {
 
-        List<Lecture> lectures= lectureRepository.findAllByOrderByDateAsc();
+        List<Lecture> lectures = lectureRepository.findAllByOrderByDateAsc();
         lectures.add(lecture);
-        if(lectures.size()>8){
+        if (lectures.size() > 8) {
 
-           bindingResult
-                  .rejectValue("date", "error.user",
-                           "* dear admin you cannot add to list more than 8 lectures ");
+            bindingResult
+                    .rejectValue("date", "error.user",
+                            "* dear admin you cannot add to list more than 8 lectures ");
+            return "lecture/lectureAdd";
         } else {
+
             lectureRepository.save(lecture);
 
-
-            model.addAttribute("successMessage", "Created new lecture: "+ lecture.getSubject());
-            model.addAttribute("lectures",lectures);
+            for (Student student : studentRepository.findAllStudents()) {
+                StudentLecture sl = new StudentLecture();
+                sl.setPresent(false);
+                sl.setLecture(lecture);
+                sl.setStudent(student);
+                studentLectureRepository.save(sl);
+            }
+            model.addAttribute("successMessage", "Created new lecture: " + lecture.getSubject());
+            model.addAttribute("lectures", lectures);
 
             return "lecture/lectureList";
+
         }
 
-        return "lecture/lectureAdd";
+
+
     }
+
 
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
@@ -188,30 +200,20 @@ public class LectureController {
 
     @Secured("ROLE_ADMIN")
     @RequestMapping(value = "/delete", method = RequestMethod.GET)
-    public String delete(Model model, @RequestParam Long id, @AuthenticationPrincipal UserDetails user) {
+    public String delete(Model model, @RequestParam Long id) {
 
 
-        Lecture lecture =lectureRepository.findOne(id);
+        Lecture lecture = lectureRepository.findOne(id);
 
         if (lecture.getDate().after(new Date())) {
-            String name=lecture.getSubject();
-            lectureRepository.delete(id);
-
-            String email= user.getUsername();
-            Student student= studentRepository.findByEmail(email);
-
-            model.addAttribute("successMessage","It was removed lecture:: "+ name);
-            model.addAttribute("lectures",lectureRepository.findAllByOrderByDateAsc());
-
-
-            List<StudentLecture> studentLectureList= studentLectureRepository.findAllByLectureId(id);
-            for( StudentLecture sl2:studentLectureList ){
-                studentLectureRepository.delete(sl2);
+            String name = lecture.getSubject();
+            List<StudentLecture> studentLectureList = studentLectureRepository.findAllByLectureId(id);
+            for (StudentLecture studentLectureToDelete : studentLectureList) {
+                studentLectureRepository.delete(studentLectureToDelete);
             }
-
-
-
-
+            lectureRepository.delete(id);
+            model.addAttribute("successMessage", "It was removed lecture:: " + name);
+            model.addAttribute("lectures", lectureRepository.findAllByOrderByDateAsc());
 
 
 
@@ -222,11 +224,11 @@ public class LectureController {
             model.addAttribute("lectures",lectures);
 
             return "lecture/lectureList";
+            }
+
+
         }
 
-
-
-    }
 
     public int countPosnumber(List<Boolean> list){
 
