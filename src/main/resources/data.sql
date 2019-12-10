@@ -72,4 +72,4 @@ insert into lectures values(6,'2019-12-11',' Wyższa Szkoła Informatyki i Zarz�
 ALTER TABLE student_lecture drop  FOREIGN KEY FKqjq6eao7fvweywy0o9guam7ke
 ALTER TABLE student_lecture drop  FOREIGN KEY FKo2ny6y91d7ejco5rnibxd83vx
 #
-# 
+#
