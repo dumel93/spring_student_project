@@ -44,7 +44,6 @@ public class LectureController {
 
     }
 
-
     @ModelAttribute
     public void addAttributes(Model model) {
         model.addAttribute("lectures", lectureRepository.findAllByOrderByDateAsc());
@@ -228,7 +227,6 @@ public class LectureController {
 
 
         }
-
 
     public int countPosnumber(List<Boolean> list){
 
