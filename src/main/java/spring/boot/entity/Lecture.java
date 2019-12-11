@@ -1,15 +1,11 @@
-package week6.boot.entity;
+package spring.boot.entity;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
-import week6.boot.validation.Amount;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import javax.validation.groups.Default;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

@@ -1,4 +1,4 @@
-package week6.boot.service;
+package spring.boot.service;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

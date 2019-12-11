@@ -1,4 +1,4 @@
-package week6.boot.service;
+package spring.boot.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,9 +6,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import week6.boot.entity.Role;
-import week6.boot.entity.Student;
-import week6.boot.repositories.StudentRepository;
+import spring.boot.entity.Role;
+import spring.boot.entity.Student;
+import spring.boot.repositories.StudentRepository;
 
 import java.util.*;
 

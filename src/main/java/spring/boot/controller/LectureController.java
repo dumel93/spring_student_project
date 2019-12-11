@@ -1,4 +1,4 @@
-package week6.boot.controller;
+package spring.boot.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import week6.boot.entity.Lecture;
-import week6.boot.entity.Student;
-import week6.boot.entity.StudentLecture;
-import week6.boot.repositories.LectureRepository;
-import week6.boot.repositories.StudentLectureRepository;
-import week6.boot.repositories.StudentRepository;
+import spring.boot.entity.Lecture;
+import spring.boot.entity.Student;
+import spring.boot.entity.StudentLecture;
+import spring.boot.repositories.LectureRepository;
+import spring.boot.repositories.StudentLectureRepository;
+import spring.boot.repositories.StudentRepository;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.*;

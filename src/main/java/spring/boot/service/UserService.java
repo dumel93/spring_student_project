@@ -1,6 +1,6 @@
-package week6.boot.service;
+package spring.boot.service;
 
-import week6.boot.entity.Student;
+import spring.boot.entity.Student;
 
 public interface UserService {
     public Student findByEmail(String name);

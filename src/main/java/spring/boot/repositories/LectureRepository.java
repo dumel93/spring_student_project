@@ -1,9 +1,8 @@
-package week6.boot.repositories;
+package spring.boot.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import week6.boot.entity.Lecture;
-import week6.boot.entity.Role;
+import spring.boot.entity.Lecture;
 
 import java.util.List;
 

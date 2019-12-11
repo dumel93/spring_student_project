@@ -1,4 +1,4 @@
-package week6.boot.validation;
+package spring.boot.validation;
 
 /**
  * This interface is used as a flag for group validation

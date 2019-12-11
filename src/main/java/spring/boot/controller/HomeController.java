@@ -1,4 +1,4 @@
-package week6.boot.controller;
+package spring.boot.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import week6.boot.entity.Student;
-import week6.boot.repositories.StudentRepository;
+import spring.boot.entity.Student;
+import spring.boot.repositories.StudentRepository;
 
 
 

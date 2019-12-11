@@ -1,9 +1,8 @@
-package week6.boot;
+package spring.boot;
 
 import com.github.javafaker.Faker;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.LocalDate;
 import java.util.Locale;
 
 public class Dataloader {

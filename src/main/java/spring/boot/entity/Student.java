@@ -1,17 +1,11 @@
-package week6.boot.entity;
+package spring.boot.entity;
 
 import com.sun.istack.internal.Nullable;
 import lombok.Data;
-import org.hibernate.annotations.Cascade;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
-import week6.boot.validation.CustomEmailVal;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import javax.validation.groups.Default;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;

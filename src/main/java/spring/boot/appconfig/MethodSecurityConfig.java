@@ -1,4 +1,4 @@
-package week6.boot.appconfig;
+package spring.boot.appconfig;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;

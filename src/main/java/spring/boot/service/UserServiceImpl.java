@@ -1,11 +1,11 @@
-package week6.boot.service;
+package spring.boot.service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import week6.boot.entity.Role;
-import week6.boot.entity.Student;
-import week6.boot.repositories.RoleRepository;
-import week6.boot.repositories.StudentRepository;
+import spring.boot.entity.Role;
+import spring.boot.entity.Student;
+import spring.boot.repositories.RoleRepository;
+import spring.boot.repositories.StudentRepository;
 
 import java.util.Arrays;
 import java.util.HashSet;

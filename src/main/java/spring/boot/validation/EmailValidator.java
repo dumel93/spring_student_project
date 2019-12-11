@@ -1,4 +1,4 @@
-package week6.boot.validation;
+package spring.boot.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

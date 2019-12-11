@@ -1,4 +1,4 @@
-package week6.boot.entity;
+package spring.boot.entity;
 
 import lombok.Data;
 
